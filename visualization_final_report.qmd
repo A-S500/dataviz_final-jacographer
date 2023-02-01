@@ -1,9 +1,55 @@
 ---
 title: "Visualization Final Report"
-author: "Me!"
+author: "Jacob Saindon"
 format: 
   html: 
-    theme: cosmo
+    theme: darkly
 ---
 
-## 
+```{r}
+library(tidyverse)
+```
+
+Source: https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-01-25/readme.md
+
+```{r}
+ratings <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-01-25/ratings.csv')
+
+ratings
+```
+
+```{r}
+ggplot(subset(ratings, rank %in% c(1:25)),aes(x=average,y=reorder(name, average)))+
+  geom_point()+
+  geom_text(aes(label=average, hjust=-0.5), size=2.5, color="black", fontface="italic")+
+  scale_x_continuous(limits=c(7.5, 9))
+
+```
+
+\^Top 25 ranked board games sorted by average user score (out of 10)
+
+```{r}
+ggplot(subset(ratings, rank %in% c(1:25)),aes(x=(users_rated/1000),y=reorder(name,users_rated/1000)))+
+  geom_point()+
+  geom_text(aes(label=(users_rated/1000), hjust=-0.5), size=2.5, color="black", fontface="italic")+
+  scale_x_continuous(limits=c(0, 90))
+```
+
+\^Top 25 ranked board games sorted by user ratings (1000s)
+
+```{r}
+#| fig-height: 8
+#| fig-width: 12
+ggplot(subset(ratings, rank %in% c(1:25)),aes(x=(users_rated/1000),y=average, color=name))+
+  geom_point()+
+  geom_text(aes(label=abbreviate(name),vjust=-0.2, hjust=-0.2),check_overlap=TRUE, size=2.5, color="black", fontface="bold")+
+  scale_x_continuous(limits=c(0, 90))+
+  scale_y_continuous(limits=c(8, 9.0))+
+  theme(legend.position="bottom")
+
+
+```
+
+\^Top 25 ranked board games: average user score (out of 10) x total number of user ratings (1000s)
+
+To-Do: fix colors; resize points; resize text labels; ...; wrap legend text
