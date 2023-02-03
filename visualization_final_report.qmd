@@ -8,48 +8,64 @@ format:
 
 ```{r}
 library(tidyverse)
+library(ggrepel)
+library(patchwork)
+set.seed(500)
 ```
 
 Source: https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-01-25/readme.md
 
 ```{r}
 ratings <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-01-25/ratings.csv')
-
-ratings
 ```
 
 ```{r}
-ggplot(subset(ratings, rank %in% c(1:25)),aes(x=average,y=reorder(name, average)))+
+rate_plot<-ggplot(subset(ratings, rank %in% c(1:25)),aes(x=average,y=reorder(abbreviate(name), average)))+
   geom_point()+
   geom_text(aes(label=average, hjust=-0.5), size=2.5, color="black", fontface="italic")+
-  scale_x_continuous(limits=c(7.5, 9))
-
+  scale_x_continuous(limits=c(7.5, 9),name="Average Rating (out of 10)")+
+  scale_y_discrete(name=NULL)+
+  theme_minimal()
 ```
 
 \^Top 25 ranked board games sorted by average user score (out of 10)
 
 ```{r}
-ggplot(subset(ratings, rank %in% c(1:25)),aes(x=(users_rated/1000),y=reorder(name,users_rated/1000)))+
+num_plot<-ggplot(subset(ratings, rank %in% c(1:25)),aes(x=(users_rated/1000),y=reorder(abbreviate(name),users_rated/1000)))+
   geom_point()+
   geom_text(aes(label=(users_rated/1000), hjust=-0.5), size=2.5, color="black", fontface="italic")+
-  scale_x_continuous(limits=c(0, 90))
+  scale_x_continuous(limits=c(0, 90),name="Number of Reviewers (thousands)")+
+  scale_y_discrete(name=NULL)+
+  theme_minimal()
 ```
 
 \^Top 25 ranked board games sorted by user ratings (1000s)
 
 ```{r}
-#| fig-height: 8
-#| fig-width: 12
-ggplot(subset(ratings, rank %in% c(1:25)),aes(x=(users_rated/1000),y=average, color=name))+
+combo_plot<-ggplot(subset(ratings, rank %in% c(1:25)),aes(x=(users_rated/1000),y=average))+
   geom_point()+
-  geom_text(aes(label=abbreviate(name),vjust=-0.2, hjust=-0.2),check_overlap=TRUE, size=2.5, color="black", fontface="bold")+
-  scale_x_continuous(limits=c(0, 90))+
-  scale_y_continuous(limits=c(8, 9.0))+
-  theme(legend.position="bottom")
-
-
+  geom_text_repel(aes(label=abbreviate(name),vjust=-0.2, hjust=-0.2), size=2.5, color="black",fontface="bold")+
+  scale_x_continuous(limits=c(0, 80), name="Number of Reviewers (thousands)")+
+  scale_y_continuous(limits=c(8, 9.0), name="Average Rating (out of 10)")+
+  theme_minimal()+
+  theme(legend.position="right")
 ```
 
 \^Top 25 ranked board games: average user score (out of 10) x total number of user ratings (1000s)
 
-To-Do: fix colors; resize points; resize text labels; ...; wrap legend text
+```{r}
+trio_plot<-combo_plot / (rate_plot | num_plot)
+```
+
+```{r}
+#| fig-width: 12
+#| fig-height: 8
+trio_plot+
+  plot_annotation(
+    title="Top 25 Ranked Board Games by Rating and Review Volume",
+    subtitle=str_wrap("According to Board Game Geek, 2022",width=50),
+    caption="Visualized by Jacob Saindon, Feb. 2023\nData from TidyTuesday by way of Board Game Geek\nhttps://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-01-25/readme.md",
+    theme = theme(plot.title = element_text(size=24, family="Times"),plot.subtitle = element_text(size=16, family="Times"), plot.caption = element_text(size=10, family="Times")))
+```
+
+To-Do: resize points, adjust text labels
