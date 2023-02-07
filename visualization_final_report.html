@@ -124,25 +124,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
+<section id="data-visualization-block-report" class="level1">
+<h1>Data Visualization Block Report</h1>
+<section id="the-visualization" class="level2">
+<h2 class="anchored" data-anchor-id="the-visualization">The Visualization</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-✔ ggplot2 3.4.0      ✔ purrr   0.3.5 
-✔ tibble  3.1.8      ✔ dplyr   1.0.10
-✔ tidyr   1.2.1      ✔ stringr 1.4.1 
-✔ readr   2.1.3      ✔ forcats 0.5.2 
+✔ ggplot2 3.4.0     ✔ purrr   1.0.1
+✔ tibble  3.1.8     ✔ dplyr   1.1.0
+✔ tidyr   1.3.0     ✔ stringr 1.5.0
+✔ readr   2.1.3     ✔ forcats 0.5.2
 ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ✖ dplyr::filter() masks stats::filter()
 ✖ dplyr::lag()    masks stats::lag()</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">500</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(showtext)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: sysfonts
+Loading required package: showtextdb</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">font_add_google</span>(<span class="at">name =</span> <span class="st">"Nunito"</span>, <span class="at">family =</span> <span class="st">"nunito"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">showtext_auto</span>()</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(<span class="dv">500</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Source: https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-01-25/readme.md</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ratings <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-01-25/ratings.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ratings <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-01-25/ratings.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Rows: 21831 Columns: 10
 ── Column specification ────────────────────────────────────────────────────────
@@ -155,59 +165,49 @@ dbl (7): num, id, year, rank, average, bayes_average, users_rated
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>rate_plot<span class="ot">&lt;-</span><span class="fu">ggplot</span>(<span class="fu">subset</span>(ratings, rank <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>)),<span class="fu">aes</span>(<span class="at">x=</span>average,<span class="at">y=</span><span class="fu">reorder</span>(name,<span class="sc">-</span>rank),<span class="at">size=</span>users_rated))<span class="sc">+</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_text_repel(aes(label=rank), size=2.5, color="black", fontface="italic")+</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="fl">7.5</span>, <span class="dv">9</span>),<span class="at">position=</span><span class="st">"top"</span>)<span class="sc">+</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">position=</span><span class="st">"left"</span>)<span class="sc">+</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"top"</span>,<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))<span class="sc">+</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Average Rating (out of 10)"</span>,</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Game Ranking (1st ranked at top, 50th at bottom)"</span>,</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">size=</span><span class="st">"Number of Reviews"</span>,</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">title=</span><span class="st">"Top 50-Ranked Board Games by Rating and Number of Reviews"</span>,</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle=</span><span class="st">"According to Board Game Geek, 2022"</span>,</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption=</span><span class="st">"Visualized by Jacob Saindon, Feb. 2023</span><span class="sc">\n</span><span class="st">Data from TidyTuesday by way of Board Game Geek</span><span class="sc">\n</span><span class="st">https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-01-25/readme.md"</span>)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>rate_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>rate_plot<span class="ot">&lt;-</span><span class="fu">ggplot</span>(<span class="fu">subset</span>(ratings, rank <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>)),<span class="fu">aes</span>(<span class="at">x=</span>average,<span class="at">y=</span><span class="fu">reorder</span>(name,<span class="sc">-</span>rank),<span class="at">size=</span>users_rated))<span class="sc">+</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_text_repel(aes(label=rank), size=2.5, color="black", fontface="italic")+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="fl">7.5</span>, <span class="dv">9</span>),<span class="at">position=</span><span class="st">"top"</span>)<span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">position=</span><span class="st">"left"</span>)<span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"top"</span>, <span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">28</span>), <span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>),<span class="at">text=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">16</span>))<span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">family=</span><span class="st">"nunito"</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Average Rating (out of 10)"</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Game Ranking (1st ranked at top, 50th at bottom)"</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">size=</span><span class="st">"Number of Reviews"</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">title=</span><span class="st">"Top 50-Ranked Board Games by Rating and Number of Reviews"</span>,</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle=</span><span class="st">"According to Board Game Geek, 2022"</span>,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption=</span><span class="st">"Visualized by Jacob Saindon, Feb. 2023</span><span class="sc">\n</span><span class="st">Data from TidyTuesday by way of Board Game Geek</span><span class="sc">\n</span><span class="st">https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-01-25/readme.md"</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>rate_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="visualization_final_report_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
-<!-- \^Top 25 ranked board games sorted by average user score (out of 10) -->
-<!-- ```{r} -->
-<!-- num_plot<-ggplot(subset(ratings, rank %in% c(1:25)),aes(x=(users_rated/1000),y=reorder(abbreviate(name),users_rated/1000)))+ -->
-<!--   geom_point()+ -->
-<!--   geom_text(aes(label=(users_rated/1000), hjust=-0.5), size=2.5, color="black", fontface="italic")+ -->
-<!--   scale_x_continuous(limits=c(0, 90),name="Number of Reviewers (thousands)")+ -->
-<!--   scale_y_discrete(name=NULL)+ -->
-<!--   theme_minimal() -->
-<!-- ``` -->
-<!-- \^Top 25 ranked board games sorted by user ratings (1000s) -->
-<!-- ```{r} -->
-<!-- combo_plot<-ggplot(subset(ratings, rank %in% c(1:25)),aes(x=(users_rated/1000),y=average))+ -->
-<!--   geom_point()+ -->
-<!--   geom_text_repel(aes(label=abbreviate(name),vjust=-0.2, hjust=-0.2), size=2.5, color="black",fontface="bold")+ -->
-<!--   scale_x_continuous(limits=c(0, 80), name="Number of Reviewers (thousands)")+ -->
-<!--   scale_y_continuous(limits=c(8, 9.0), name="Average Rating (out of 10)")+ -->
-<!--   theme_minimal() -->
-<!-- combo_plot -->
-<!-- ``` -->
-<!-- \^Top 25 ranked board games: average user score (out of 10) x total number of user ratings (1000s) -->
-<!-- ```{r} -->
-<!-- trio_plot<-combo_plot / (rate_plot | num_plot) -->
-<!-- ``` -->
-<!-- ```{r} -->
-<!-- #| fig-width: 12 -->
-<!-- #| fig-height: 8 -->
-<!-- trio_plot+ -->
-<!--   plot_annotation( -->
-<!--     title="Top 25 Ranked Board Games by Rating and Review Volume", -->
-<!--     subtitle=str_wrap("According to Board Game Geek, 2022",width=50), -->
-<!--     caption="Visualized by Jacob Saindon, Feb. 2023\nData from TidyTuesday by way of Board Game Geek\nhttps://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-01-25/readme.md", -->
-<!--     theme = theme(plot.title = element_text(size=24, family="Times"),plot.subtitle = element_text(size=16, family="Times"), plot.caption = element_text(size=10, family="Times"))) -->
-<!-- ``` -->
-<p>To-Do: resize points, adjust text labels</p>
+</section>
+<section id="the-report" class="level2">
+<h2 class="anchored" data-anchor-id="the-report">The Report</h2>
+<p>What data you’re plotting, and what its source is.</p>
+<ul>
+<li>The chart is visualizing the Top 50-ranked games according to rating site Board Game Geek (BGG), top-to-bottom, displayed on the x-axis by the games’ average rating out of 10. The size of the dot represents the total volume of reviews on BGG.</li>
+</ul>
+<p>Do you have a sketch of what you’d like the plot to look like?</p>
+<ul>
+<li>Curious about the relationship between game rankings from BGG (a respected rater) and the volume/rating of games</li>
+</ul>
+<p>What decisions did you make in creating the plot (e.g.&nbsp;labels, colors, geometries, plot orientation, etc.)</p>
+<ul>
+<li>Label by individual games, not in aggregate. Because dataset does not include categories (such as Eurogames v. Amerigames). No colors, since no categorization. Size as a visual variable to correspond to number of reviews. Rating on the x-axis to keep game names more visible on the y-axis.</li>
+</ul>
+<p>Why did you make those decisions?</p>
+<p>Does the final plot fall short of your ultimate vision in any way?</p>
+<ul>
+<li><p>I would have liked to include the Y-axis title on the right-hand side to separate it from the board games names.</p></li>
+<li><p>There are some slight imperfections in terms of visualization overlaps that I am not certain how to correct.</p></li>
+</ul>
+</section>
+</section>
 
 </main>
 <!-- /main column -->

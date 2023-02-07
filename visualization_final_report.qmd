@@ -6,11 +6,17 @@ format:
     theme: darkly
 ---
 
+# Data Visualization Block Report
+
+## The Visualization
+
 ```{r}
 library(tidyverse)
 library(ggrepel)
-library(patchwork)
-set.seed(500)
+library(showtext)
+  font_add_google(name = "Nunito", family = "nunito")
+  showtext_auto()
+  set.seed(500)
 ```
 
 Source: https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-01-25/readme.md
@@ -24,12 +30,12 @@ ratings <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesd
 #| fig-height: 8
 rate_plot<-ggplot(subset(ratings, rank %in% c(1:50)),aes(x=average,y=reorder(name,-rank),size=users_rated))+
   geom_point()+
-  # geom_text_repel(aes(label=rank), size=2.5, color="black", fontface="italic")+
   scale_x_continuous(limits=c(7.5, 9),position="top")+
   scale_y_discrete(position="left")+
   theme_minimal()+
-  theme(legend.position="top",plot.title=element_text(hjust = 0.5))+
-  labs(x="Average Rating (out of 10)",
+  theme(legend.position="top", plot.title=element_text(size = 28), plot.subtitle=element_text(size = 20),text=element_text(size=16))+
+  labs(family="nunito",
+       x="Average Rating (out of 10)",
        y="Game Ranking (1st ranked at top, 50th at bottom)",
        size="Number of Reviews",
        title="Top 50-Ranked Board Games by Rating and Number of Reviews",
@@ -39,70 +45,25 @@ rate_plot<-ggplot(subset(ratings, rank %in% c(1:50)),aes(x=average,y=reorder(nam
 rate_plot
 ```
 
-<!-- \^Top 25 ranked board games sorted by average user score (out of 10) -->
+## The Report
 
-<!-- ```{r} -->
+What data you're plotting, and what its source is.
 
-<!-- num_plot<-ggplot(subset(ratings, rank %in% c(1:25)),aes(x=(users_rated/1000),y=reorder(abbreviate(name),users_rated/1000)))+ -->
+-   The chart is visualizing the Top 50-ranked games according to rating site Board Game Geek (BGG), top-to-bottom, displayed on the x-axis by the games' average rating out of 10. The size of the dot represents the total volume of reviews on BGG.
 
-<!--   geom_point()+ -->
+Do you have a sketch of what you'd like the plot to look like?
 
-<!--   geom_text(aes(label=(users_rated/1000), hjust=-0.5), size=2.5, color="black", fontface="italic")+ -->
+-   Curious about the relationship between game rankings from BGG (a respected rater) and the volume/rating of games
 
-<!--   scale_x_continuous(limits=c(0, 90),name="Number of Reviewers (thousands)")+ -->
+What decisions did you make in creating the plot (e.g. labels, colors, geometries, plot orientation, etc.)
 
-<!--   scale_y_discrete(name=NULL)+ -->
+-   Label by individual games, not in aggregate. Because dataset does not include categories (such as Eurogames v. Amerigames). No colors, since no categorization. Size as a visual variable to correspond to number of reviews. Rating on the x-axis to keep game names more visible on the y-axis. Labeled at the top because the chart is long to incorporate all 50 games.
+-   Ordering games from #1 ranked at the top to #50 at the bottom. Selecting only top 50 to try and keep the chart legible. Setting the x-breaks at 7.5 and 9 to show variation but not over-emphasize the difference.
 
-<!--   theme_minimal() -->
+Why did you make those decisions?
 
-<!-- ``` -->
+Does the final plot fall short of your ultimate vision in any way?
 
-<!-- \^Top 25 ranked board games sorted by user ratings (1000s) -->
+-   I would have liked to include the Y-axis title on the right-hand side to separate it from the board games names.
 
-<!-- ```{r} -->
-
-<!-- combo_plot<-ggplot(subset(ratings, rank %in% c(1:25)),aes(x=(users_rated/1000),y=average))+ -->
-
-<!--   geom_point()+ -->
-
-<!--   geom_text_repel(aes(label=abbreviate(name),vjust=-0.2, hjust=-0.2), size=2.5, color="black",fontface="bold")+ -->
-
-<!--   scale_x_continuous(limits=c(0, 80), name="Number of Reviewers (thousands)")+ -->
-
-<!--   scale_y_continuous(limits=c(8, 9.0), name="Average Rating (out of 10)")+ -->
-
-<!--   theme_minimal() -->
-
-<!-- combo_plot -->
-
-<!-- ``` -->
-
-<!-- \^Top 25 ranked board games: average user score (out of 10) x total number of user ratings (1000s) -->
-
-<!-- ```{r} -->
-
-<!-- trio_plot<-combo_plot / (rate_plot | num_plot) -->
-
-<!-- ``` -->
-
-<!-- ```{r} -->
-
-<!-- #| fig-width: 12 -->
-
-<!-- #| fig-height: 8 -->
-
-<!-- trio_plot+ -->
-
-<!--   plot_annotation( -->
-
-<!--     title="Top 25 Ranked Board Games by Rating and Review Volume", -->
-
-<!--     subtitle=str_wrap("According to Board Game Geek, 2022",width=50), -->
-
-<!--     caption="Visualized by Jacob Saindon, Feb. 2023\nData from TidyTuesday by way of Board Game Geek\nhttps://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-01-25/readme.md", -->
-
-<!--     theme = theme(plot.title = element_text(size=24, family="Times"),plot.subtitle = element_text(size=16, family="Times"), plot.caption = element_text(size=10, family="Times"))) -->
-
-<!-- ``` -->
-
-To-Do: resize points, adjust text labels
+-   There are some slight imperfections in terms of visualization overlaps that I am not certain how to correct.
