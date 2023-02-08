@@ -6,8 +6,6 @@ format:
     theme: darkly
 ---
 
-# Data Visualization Block Report
-
 ## The Visualization
 
 ```{r}
@@ -47,23 +45,14 @@ rate_plot
 
 ## The Report
 
-What data you're plotting, and what its source is.
+The chart above is visualizing the Top 50-ranked games according to rating site Board Game Geek (BGG), displaying each games by its average rating out of 10 and the total volume of reviews on BGG. The source was a TidyTuesday dataset: https://github.com/rfordatascience/tidytuesday/tree/master/data/2022/2022-01-25.
 
--   The chart is visualizing the Top 50-ranked games according to rating site Board Game Geek (BGG), top-to-bottom, displayed on the x-axis by the games' average rating out of 10. The size of the dot represents the total volume of reviews on BGG.
+I have chosen to visualize this because I am familiar with board games and BGG, and am curious about the relationship between game rankings from BGG (a respected rater) and the volume/rating of games. Ideally, I would like to see whether there is a visible trend between these two metrics, and which (if any) games are outliers.
 
-Do you have a sketch of what you'd like the plot to look like?
+I have chosen to label the axes by individual game, not in aggregate. I chose to select only the top 50 games in order to include the game names, and rank them from #1 at the top and #50 at the bottom to align with visual norms. The choice to label by game was made because the dataset doesn't include natural categories to aggregate by (such as Eurogame v. Amerigame). Because of this, I have chosen not to include any color in the chart in order to avoid any confusion regarding categorization. Instead, I've chosen size as a visual variable to correspond to number of reviews, which is an expected visual relationship (bigger=more). I've included the rating out of 10 on the x-axis in order to keep game names more visible on the y-axis. I have also moved the x-axis label at the top because I've lengthened the chart height to include all top 50 games. I set the breaks on the x-axis to 7.5 and 9 to show variation but not over-emphasize the difference between the game ratings. Finally, for the chart labels, I adjusted the font to a family I find pleasant (Nunito) and sizing that is readable but not distractingly large.
 
--   Curious about the relationship between game rankings from BGG (a respected rater) and the volume/rating of games
+While I am pretty happy with the final product, there are a couple issues I was not able to correct:
 
-What decisions did you make in creating the plot (e.g. labels, colors, geometries, plot orientation, etc.)
-
--   Label by individual games, not in aggregate. Because dataset does not include categories (such as Eurogames v. Amerigames). No colors, since no categorization. Size as a visual variable to correspond to number of reviews. Rating on the x-axis to keep game names more visible on the y-axis. Labeled at the top because the chart is long to incorporate all 50 games.
--   Ordering games from #1 ranked at the top to #50 at the bottom. Selecting only top 50 to try and keep the chart legible. Setting the x-breaks at 7.5 and 9 to show variation but not over-emphasize the difference.
-
-Why did you make those decisions?
-
-Does the final plot fall short of your ultimate vision in any way?
-
--   I would have liked to include the Y-axis title on the right-hand side to separate it from the board games names.
-
--   There are some slight imperfections in terms of visualization overlaps that I am not certain how to correct.
+1.  I would have liked to include the y-axis title on the right-hand side to separate it from the board games names, but that doesn't appear to be easily doable in R.
+2.  There are some slight imperfections in terms of visualization overlaps that I am not certain how to correct.
+3.  The chart does not account for date of release---newer games are more likely to have fewer reviews, which may skew any conclusions we try to draw about review volume.

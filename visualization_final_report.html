@@ -124,8 +124,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<section id="data-visualization-block-report" class="level1">
-<h1>Data Visualization Block Report</h1>
 <section id="the-visualization" class="level2">
 <h2 class="anchored" data-anchor-id="the-visualization">The Visualization</h2>
 <div class="cell">
@@ -167,20 +165,19 @@ dbl (7): num, id, year, rank, average, bayes_average, users_rated
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>rate_plot<span class="ot">&lt;-</span><span class="fu">ggplot</span>(<span class="fu">subset</span>(ratings, rank <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>)),<span class="fu">aes</span>(<span class="at">x=</span>average,<span class="at">y=</span><span class="fu">reorder</span>(name,<span class="sc">-</span>rank),<span class="at">size=</span>users_rated))<span class="sc">+</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_text_repel(aes(label=rank), size=2.5, color="black", fontface="italic")+</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="fl">7.5</span>, <span class="dv">9</span>),<span class="at">position=</span><span class="st">"top"</span>)<span class="sc">+</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">position=</span><span class="st">"left"</span>)<span class="sc">+</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"top"</span>, <span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">28</span>), <span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>),<span class="at">text=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">16</span>))<span class="sc">+</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">family=</span><span class="st">"nunito"</span>,</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Average Rating (out of 10)"</span>,</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Game Ranking (1st ranked at top, 50th at bottom)"</span>,</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">size=</span><span class="st">"Number of Reviews"</span>,</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">title=</span><span class="st">"Top 50-Ranked Board Games by Rating and Number of Reviews"</span>,</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle=</span><span class="st">"According to Board Game Geek, 2022"</span>,</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption=</span><span class="st">"Visualized by Jacob Saindon, Feb. 2023</span><span class="sc">\n</span><span class="st">Data from TidyTuesday by way of Board Game Geek</span><span class="sc">\n</span><span class="st">https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-01-25/readme.md"</span>)</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>rate_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="fl">7.5</span>, <span class="dv">9</span>),<span class="at">position=</span><span class="st">"top"</span>)<span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">position=</span><span class="st">"left"</span>)<span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"top"</span>, <span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">28</span>), <span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>),<span class="at">text=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">16</span>))<span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">family=</span><span class="st">"nunito"</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Average Rating (out of 10)"</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Game Ranking (1st ranked at top, 50th at bottom)"</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">size=</span><span class="st">"Number of Reviews"</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">title=</span><span class="st">"Top 50-Ranked Board Games by Rating and Number of Reviews"</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle=</span><span class="st">"According to Board Game Geek, 2022"</span>,</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption=</span><span class="st">"Visualized by Jacob Saindon, Feb. 2023</span><span class="sc">\n</span><span class="st">Data from TidyTuesday by way of Board Game Geek</span><span class="sc">\n</span><span class="st">https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-01-25/readme.md"</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>rate_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="visualization_final_report_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="768"></p>
 </div>
@@ -188,25 +185,15 @@ dbl (7): num, id, year, rank, average, bayes_average, users_rated
 </section>
 <section id="the-report" class="level2">
 <h2 class="anchored" data-anchor-id="the-report">The Report</h2>
-<p>What data you’re plotting, and what its source is.</p>
-<ul>
-<li>The chart is visualizing the Top 50-ranked games according to rating site Board Game Geek (BGG), top-to-bottom, displayed on the x-axis by the games’ average rating out of 10. The size of the dot represents the total volume of reviews on BGG.</li>
-</ul>
-<p>Do you have a sketch of what you’d like the plot to look like?</p>
-<ul>
-<li>Curious about the relationship between game rankings from BGG (a respected rater) and the volume/rating of games</li>
-</ul>
-<p>What decisions did you make in creating the plot (e.g.&nbsp;labels, colors, geometries, plot orientation, etc.)</p>
-<ul>
-<li>Label by individual games, not in aggregate. Because dataset does not include categories (such as Eurogames v. Amerigames). No colors, since no categorization. Size as a visual variable to correspond to number of reviews. Rating on the x-axis to keep game names more visible on the y-axis.</li>
-</ul>
-<p>Why did you make those decisions?</p>
-<p>Does the final plot fall short of your ultimate vision in any way?</p>
-<ul>
-<li><p>I would have liked to include the Y-axis title on the right-hand side to separate it from the board games names.</p></li>
-<li><p>There are some slight imperfections in terms of visualization overlaps that I am not certain how to correct.</p></li>
-</ul>
-</section>
+<p>The chart above is visualizing the Top 50-ranked games according to rating site Board Game Geek (BGG), displaying each games by its average rating out of 10 and the total volume of reviews on BGG. The source was a TidyTuesday dataset: https://github.com/rfordatascience/tidytuesday/tree/master/data/2022/2022-01-25.</p>
+<p>I have chosen to visualize this because I am familiar with board games and BGG, and am curious about the relationship between game rankings from BGG (a respected rater) and the volume/rating of games. Ideally, I would like to see whether there is a visible trend between these two metrics, and which (if any) games are outliers.</p>
+<p>I have chosen to label the axes by individual game, not in aggregate. I chose to select only the top 50 games in order to include the game names, and rank them from #1 at the top and #50 at the bottom to align with visual norms. The choice to label by game was made because the dataset doesn’t include natural categories to aggregate by (such as Eurogame v. Amerigame). Because of this, I have chosen not to include any color in the chart in order to avoid any confusion regarding categorization. Instead, I’ve chosen size as a visual variable to correspond to number of reviews, which is an expected visual relationship (bigger=more). I’ve included the rating out of 10 on the x-axis in order to keep game names more visible on the y-axis. I have also moved the x-axis label at the top because I’ve lengthened the chart height to include all top 50 games. I set the breaks on the x-axis to 7.5 and 9 to show variation but not over-emphasize the difference between the game ratings. Finally, for the chart labels, I adjusted the font to a family I find pleasant (Nunito) and sizing that is readable but not distractingly large.</p>
+<p>While I am pretty happy with the final product, there are a couple issues I was not able to correct:</p>
+<ol type="1">
+<li>I would have liked to include the y-axis title on the right-hand side to separate it from the board games names, but that doesn’t appear to be easily doable in R.</li>
+<li>There are some slight imperfections in terms of visualization overlaps that I am not certain how to correct.</li>
+<li>The chart does not account for date of release—newer games are more likely to have fewer reviews, which may skew any conclusions we try to draw about review volume.</li>
+</ol>
 </section>
 
 </main>
