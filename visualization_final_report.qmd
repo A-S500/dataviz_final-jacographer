@@ -17,8 +17,6 @@ library(showtext)
   set.seed(500)
 ```
 
-Source: https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-01-25/readme.md
-
 ```{r}
 ratings <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-01-25/ratings.csv')
 ```
